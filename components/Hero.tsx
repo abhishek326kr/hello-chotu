@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ShoppingBag, Truck } from "lucide-react";
 import { HomepageSection } from "@/types/api";
@@ -13,7 +14,7 @@ interface HeroProps {
 export default function Hero({ data }: HeroProps) {
     // If no image from API, use default.
     // The API images array might be present.
-    const heroImage = data.images && data.images.length > 0 ? `https://web.cultnest.com${data.images[0]}` : "/images/shopkeeper.png";
+    const heroImage = data.images && data.images.length > 0 ? `https://web.cultnest.com${data.images[0]}?v=fixed` : "/images/shopkeeper.png";
 
     return (
         <section className="relative w-full min-h-[90vh] flex items-center justify-center overflow-hidden bg-brand-navy pt-20">
@@ -80,7 +81,14 @@ export default function Hero({ data }: HeroProps) {
                             <div className="w-full h-full rounded-2xl bg-brand-navy/50 overflow-hidden relative">
                                 <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/80 to-transparent z-10" />
                                 <div className="w-full h-full relative">
-                                    <img src={heroImage} alt={data.headline} className="object-cover w-full h-full opacity-80" />
+                                    <Image
+                                        src={heroImage}
+                                        alt={data.headline}
+                                        fill
+                                        className="object-cover opacity-80"
+                                        sizes="(max-width: 768px) 100vw, 500px"
+                                        priority
+                                    />
                                 </div>
                             </div>
                         </div>
