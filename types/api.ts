@@ -2,7 +2,7 @@ export interface HomepageSection {
     id: number;
     headline: string;
     subheading: string;
-    sectionName: "Hero" | "About Us" | "Services" | "Why Choose Us" | "Testimonials";
+    sectionName: string;
     text: string; // HTML content
     images: string[];
     order: number;

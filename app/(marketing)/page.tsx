@@ -13,7 +13,7 @@ async function getHomepageData(): Promise<HomepageApiResponse | null> {
     // Using no-store to ensure we get fresh data on every request, 
     // or use revalidate if we want some caching. 
     // Given 'add this api', assume user wants to see results immediately.
-    const res = await fetch('https://web.cultnest.com/api/homepage', { cache: 'no-store' });
+    const res = await fetch('https://webapi.cultnest.com/api/homepage', { cache: 'no-store' });
 
     if (!res.ok) {
       throw new Error(`Failed to fetch homepage data: ${res.status}`);
@@ -36,11 +36,11 @@ export default async function Home() {
   // Map sections to their data. 
   // We can also just iterate through the sorted sections and render dynamically, 
   // but mapping guarantees we use the specific component designed for that section type.
-  const heroData = sections.find(s => s.sectionName === 'Hero');
-  const aboutData = sections.find(s => s.sectionName === 'About Us');
-  const servicesData = sections.find(s => s.sectionName === 'Services');
-  const whyData = sections.find(s => s.sectionName === 'Why Choose Us');
-  const testimonialsData = sections.find(s => s.sectionName === 'Testimonials');
+  const heroData = sections.find(s => s.sectionName.toLowerCase() === 'hero');
+  const aboutData = sections.find(s => s.sectionName.toLowerCase() === 'about us');
+  const servicesData = sections.find(s => s.sectionName.toLowerCase() === 'services');
+  const whyData = sections.find(s => s.sectionName.toLowerCase() === 'why choose us');
+  const testimonialsData = sections.find(s => s.sectionName.toLowerCase() === 'testimonials');
 
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 overflow-x-hidden">
