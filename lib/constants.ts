@@ -8,6 +8,7 @@ export const BRAND = {
 
 export const NAV_LINKS = [
     { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
     { href: "/services", label: "Our Services" },
     { href: "/franchise", label: "Franchise" },
     { href: "/social-impact", label: "For Community" },

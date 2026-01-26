@@ -12,16 +12,38 @@ export default function ContactForm() {
         message: "",
     });
 
+    const [loading, setLoading] = useState(false);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Form submitted:", formData);
-        alert("Thank you for your inquiry! We will get back to you soon.");
-        setFormData({ name: "", email: "", phone: "", type: "General Inquiry", message: "" });
+        setLoading(true);
+
+        try {
+            const response = await fetch('https://webapi.cultnest.com/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                alert("Thank you for your inquiry! We will get back to you soon.");
+                setFormData({ name: "", email: "", phone: "", type: "General Inquiry", message: "" });
+            } else {
+                alert("Something went wrong. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error submitting form:", error);
+            alert("Error submitting form. Please check your connection.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
