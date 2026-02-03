@@ -8,12 +8,20 @@ import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import VisionSection from "@/components/VisionSection";
 import { HomepageApiResponse } from "@/types/api";
 
+// Helper to determine section type for generic rendering
+function getSectionType(name: string): 'hero' | 'services' | 'testimonials' | 'why' | 'generic' {
+  const normalized = name.toLowerCase();
+  if (normalized.includes('hero')) return 'hero';
+  if (normalized.includes('services')) return 'services';
+  if (normalized.includes('testimonial')) return 'testimonials';
+  if (normalized.includes('why') && normalized.includes('choose')) return 'why';
+  return 'generic'; // Default to generic content block (About style)
+}
+
 async function getHomepageData(): Promise<HomepageApiResponse | null> {
   try {
-    // Using no-store to ensure we get fresh data on every request, 
-    // or use revalidate if we want some caching. 
-    // Given 'add this api', assume user wants to see results immediately.
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/homepage`, { cache: 'no-store' });
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://webapi.cultnest.com';
+    const res = await fetch(`${API_URL}/api/homepage`, { cache: 'no-store' });
 
     if (!res.ok) {
       throw new Error(`Failed to fetch homepage data: ${res.status}`);
@@ -33,34 +41,41 @@ export default async function Home() {
   // Sort sections by 'order' property to ensure correct display order
   sections.sort((a, b) => a.order - b.order);
 
-  // Map sections to their data. 
-  // We can also just iterate through the sorted sections and render dynamically, 
-  // but mapping guarantees we use the specific component designed for that section type.
-  const heroData = sections.find(s => s.sectionName.toLowerCase() === 'hero');
-  const aboutData = sections.find(s => s.sectionName.toLowerCase() === 'about us');
-  const servicesData = sections.find(s => s.sectionName.toLowerCase() === 'services');
-  const whyData = sections.find(s => s.sectionName.toLowerCase() === 'why choose us');
-  const testimonialsData = sections.find(s => s.sectionName.toLowerCase() === 'testimonials');
-
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 overflow-x-hidden">
-      {heroData ? (
-        <Hero data={heroData} />
+      {sections.length === 0 ? (
+        <div className="py-20 text-center">Loading Content...</div>
       ) : (
-        // Fallback if API fails or no Hero section
-        <div className="py-20 text-center">Hero Section Loading or Unavailable</div>
+        sections.map((section, index) => {
+          const type = getSectionType(section.sectionName);
+
+          switch (type) {
+            case 'hero':
+              return <Hero key={section.id || index} data={section} />;
+            case 'services':
+              return <ServicesSection key={section.id || index} data={section} />;
+            case 'testimonials':
+              return <TestimonialsSection key={section.id || index} data={section} />;
+            case 'why':
+              return <WhyChooseUsSection key={section.id || index} data={section} />;
+            case 'generic':
+            default:
+              // Use AboutSection as the generic content renderer
+              // Pass index to potentially alternate layout (left/right) if supported in future
+              return <AboutSection key={section.id || index} data={section} />;
+          }
+        })
       )}
 
+      {/* Static Sections that haven't been API-fied yet, or keep them if they are separate */}
+      {/* <Stats /> and <VisionSection /> seem to be static components not in the API list yet. 
+          The user said "all api will work like this", implying we might replace everything eventually.
+          For now, I'll keep them effectively "hardcoded" at the bottom or interleave them if needed. 
+          But the user asked to render sections from API. 
+          Let's assume Stats and Vision are part of the layout but not dynamic yet.
+          I will place them at the bottom for now.
+      */}
       <Stats />
-
-      {aboutData && <AboutSection data={aboutData} />}
-
-      {servicesData && <ServicesSection data={servicesData} />}
-
-      {whyData && <WhyChooseUsSection data={whyData} />}
-
-      {testimonialsData && <TestimonialsSection data={testimonialsData} />}
-
       <VisionSection />
     </main>
   );

@@ -6,7 +6,8 @@ import Image from "next/image";
 import { HomepageSection } from "@/types/api";
 
 export default function AboutSection({ data }: { data: HomepageSection }) {
-    const imageUrl = data.images && data.images.length > 0 ? `${process.env.NEXT_PUBLIC_API_URL}${data.images[0]}` : "/images/why-image.png";
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://webapi.cultnest.com';
+    const imageUrl = data.images && data.images.length > 0 ? `${API_URL}${data.images[0]}` : "/images/why-image.png";
 
     return (
         <section className="py-24 relative overflow-hidden bg-white dark:bg-slate-950">
