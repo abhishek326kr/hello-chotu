@@ -61,8 +61,8 @@ export default async function Home() {
             case 'generic':
             default:
               // Use AboutSection as the generic content renderer
-              // Pass index to potentially alternate layout (left/right) if supported in future
-              return <AboutSection key={section.id || index} data={section} />;
+              // Alternate layout based on index (odd indexes reversed = Image Right)
+              return <AboutSection key={section.id || index} data={section} isReversed={index % 2 !== 0} />;
           }
         })
       )}

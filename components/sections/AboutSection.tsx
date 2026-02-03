@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { HomepageSection } from "@/types/api";
 
-export default function AboutSection({ data }: { data: HomepageSection }) {
+export default function AboutSection({ data, isReversed = false }: { data: HomepageSection, isReversed?: boolean }) {
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://webapi.cultnest.com';
     const imageUrl = data.images && data.images.length > 0 ? `${API_URL}${data.images[0]}` : "/images/why-image.png";
 
@@ -14,11 +14,11 @@ export default function AboutSection({ data }: { data: HomepageSection }) {
             <div className="container mx-auto px-4">
                 <div className="grid lg:grid-cols-2 gap-16 items-center">
                     <motion.div
-                        initial={{ opacity: 0, x: -50 }}
+                        initial={{ opacity: 0, x: isReversed ? 50 : -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
-                        className="relative"
+                        className={`relative ${isReversed ? 'lg:order-2' : ''}`}
                     >
                         <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white dark:border-slate-800 aspect-video">
                             <Image
@@ -34,10 +34,11 @@ export default function AboutSection({ data }: { data: HomepageSection }) {
                     </motion.div>
 
                     <motion.div
-                        initial={{ opacity: 0, x: 50 }}
+                        initial={{ opacity: 0, x: isReversed ? -50 : 50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
+                        className={isReversed ? 'lg:order-1' : ''}
                     >
                         <div className="inline-block px-4 py-1.5 rounded-full bg-theme-start/10 text-theme-start font-bold text-sm mb-6">
                             {data.sectionName}
