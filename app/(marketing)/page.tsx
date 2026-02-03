@@ -13,7 +13,7 @@ async function getHomepageData(): Promise<HomepageApiResponse | null> {
     // Using no-store to ensure we get fresh data on every request, 
     // or use revalidate if we want some caching. 
     // Given 'add this api', assume user wants to see results immediately.
-    const res = await fetch('https://webapi.cultnest.com/api/homepage', { cache: 'no-store' });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/homepage`, { cache: 'no-store' });
 
     if (!res.ok) {
       throw new Error(`Failed to fetch homepage data: ${res.status}`);

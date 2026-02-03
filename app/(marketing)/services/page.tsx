@@ -13,8 +13,10 @@ export default function ServicesPage() {
     useEffect(() => {
         const fetchServices = async () => {
             try {
-                // User provided endpoint: https://web.cultnest.com/api/services
-                const response = await fetch('https://web.cultnest.com/api/services');
+                // User provided endpoint: ${process.env.NEXT_PUBLIC_API_URL}/api/services
+                // Use relative path for client-side fetch to avoid CORS (proxied by Next.js)
+                const API_URL = '';
+                const response = await fetch(`${API_URL}/api/services`);
                 if (!response.ok) throw new Error("Failed to fetch services");
                 const result: ServiceApiResponse = await response.json();
 
@@ -86,7 +88,7 @@ export default function ServicesPage() {
                                 const style = COLORS[index % COLORS.length];
 
                                 const imageUrl = section.images && section.images.length > 0
-                                    ? `https://web.cultnest.com${section.images[0]}`
+                                    ? `${process.env.NEXT_PUBLIC_API_URL || 'https://webapi.cultnest.com'}${section.images[0]}`
                                     : null;
 
                                 return (

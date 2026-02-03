@@ -24,7 +24,8 @@ export default function ContactForm() {
         setLoading(true);
 
         try {
-            const response = await fetch('https://webapi.cultnest.com/api/contact', {
+            // Use relative path to avoid CORS issues
+            const response = await fetch(`/api/contact`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

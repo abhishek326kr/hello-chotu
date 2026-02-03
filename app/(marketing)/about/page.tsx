@@ -5,7 +5,7 @@ import { HomepageApiResponse } from "@/types/api";
 
 async function getAboutData(): Promise<HomepageApiResponse | null> {
     try {
-        const res = await fetch('https://webapi.cultnest.com/api/about', { cache: 'no-store' });
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/about`, { cache: 'no-store' });
 
         if (!res.ok) {
             throw new Error(`Failed to fetch about data: ${res.status}`);

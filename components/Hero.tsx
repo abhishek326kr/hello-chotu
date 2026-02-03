@@ -14,7 +14,7 @@ interface HeroProps {
 export default function Hero({ data }: HeroProps) {
     // If no image from API, use default.
     // The API images array might be present.
-    const heroImage = data.images && data.images.length > 0 ? `https://web.cultnest.com${data.images[0]}?v=fixed` : "/images/shopkeeper.png";
+    const heroImage = data.images && data.images.length > 0 ? `${process.env.NEXT_PUBLIC_API_URL}${data.images[0]}?v=fixed` : "/images/shopkeeper.png";
 
     return (
         <section className="relative w-full min-h-[90vh] flex items-center justify-center overflow-hidden bg-brand-navy pt-20">

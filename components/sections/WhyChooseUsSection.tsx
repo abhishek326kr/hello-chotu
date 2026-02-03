@@ -6,7 +6,7 @@ import Image from "next/image";
 import { HomepageSection } from "@/types/api";
 
 export default function WhyChooseUsSection({ data }: { data: HomepageSection }) {
-    const imageUrl = data.images && data.images.length > 0 ? `https://web.cultnest.com${data.images[0]}` : "/images/why-image.png";
+    const imageUrl = data.images && data.images.length > 0 ? `${process.env.NEXT_PUBLIC_API_URL}${data.images[0]}` : "/images/why-image.png";
 
     return (
         <section className="py-24 bg-white dark:bg-slate-950">

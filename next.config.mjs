@@ -4,9 +4,17 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'web.cultnest.com',
+                hostname: 'webapi.cultnest.com',
             },
         ],
+    },
+    async rewrites() {
+        return [
+            {
+                source: '/api/:path*',
+                destination: 'https://webapi.cultnest.com/api/:path*',
+            },
+        ];
     },
 };
 
